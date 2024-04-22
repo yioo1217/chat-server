@@ -20,42 +20,42 @@ const createSessionId = function () {
 const crypto = require('crypto');
 
 
-const {
-  publicKey,
-  privateKey,
-} = crypto.generateKeyPairSync('rsa', {
-  modulusLength: 512,
-  publicKeyEncoding: {
-    type: 'spki',
-    format: 'pem'
-  },
-  privateKeyEncoding: {
-    type: 'pkcs8',
-    format: 'pem',
-    cipher: 'aes-256-cbc',
-    passphrase: 'top secret'
-  }
-});
-// const createRsaKey = function () {
-//   const key = crypto.generateKeyPairSync('rsa', {
-//     modulusLength: 2048,
-//     publicExponent: 65537,
-//   });
-//   const publicKeyPem = key.publicKey.export({
+// const {
+//   publicKey,
+//   privateKey,
+// } = crypto.generateKeyPairSync('rsa', {
+//   modulusLength: 512,
+//   publicKeyEncoding: {
 //     type: 'spki',
 //     format: 'pem'
-//   });
-//   console.log(publicKeyPem);
-//   const privateKeyPem = key.privateKey.export({
-//     type: 'spki',
-//     format: 'pem'
-//   });
-//   return publicKeyPem;
-// }
+//   },
+//   privateKeyEncoding: {
+//     type: 'pkcs8',
+//     format: 'pem',
+//     cipher: 'aes-256-cbc',
+//     passphrase: 'top secret'
+//   }
+// });
+const createRsaKey = function () {
+  const key = crypto.generateKeyPairSync('rsa', {
+    modulusLength: 512,
+    publicKeyEncoding: {
+      type: 'spki',
+      format: 'pem'
+    },
+    privateKeyEncoding: {
+      type: 'pkcs8',
+      format: 'pem',
+      cipher: 'aes-256-cbc',
+      passphrase: 'top secret'
+    }
+  });
+  return key;
+}
 module.exports = {
   guid,
   createSessionId,
-  // createRsaKey,
-  publicKey,
-  privateKey
+  createRsaKey,
+  // publicKey,
+  // privateKey
 }

@@ -28,9 +28,9 @@ const signin = async (req, res, next) => {
     return
   }
   //生成rsa密钥
-  let key = utils.publicKey
+  let key = utils.createRsaKey().publicKey
   // 加密密码
-  let priKey = utils.privateKey
+  let priKey = utils.createRsaKey().privateKey
   let timestamps = new Date().getTime()
   // 写入数据库
   let user = await dao_user.addUser({ userName, password: md5(password), email, avatar, createdAt: timestamps, updatedAt: timestamps, key: key });
@@ -87,6 +87,7 @@ const login = async (req, res, next) => {
     }))
     return
   }
+  const publicKey = await dao_user.getKey();
 
   // 登录成功
   // 写入session
@@ -101,7 +102,8 @@ const login = async (req, res, next) => {
       email: user.email,
       avatar: user.avatar,
       createdAt: user.createdAt
-    }
+    },
+    publicKey: publicKey
   }))
 }
 
@@ -111,7 +113,7 @@ const getLogin = async (req, res, next) => {
 
   // const user = await utils.isLogin(req, res)
   const user = await dao_user.getUserById(req.session["userId"])
-
+  const publicKey = await dao_user.getKey();
   // 返回结果
   res.end(JSON.stringify({
     code: 200,
@@ -122,7 +124,8 @@ const getLogin = async (req, res, next) => {
       email: user.email,
       avatar: user.avatar,
       createdAt: user.createdAt
-    }
+    },
+    publicKey: publicKey
   }))
 }
 
