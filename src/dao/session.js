@@ -120,8 +120,8 @@ const getSessionList = async (userId, lastTime) => {
 
   list.find(item => {
     if (item.dataValues.type == 2) {
-      item.dataValues.cover = 'http://114.132.235.129:3000/1648365630990.png'
-      item.dataValues.sessionName = 'Socket-Chat系统通知'
+      item.dataValues.cover = 'https://tse4-mm.cn.bing.net/th/id/OIP-C.CEB3TwWumQLBQ8_y2hI-YQAAAA?w=175&h=180&c=7&r=0&o=5&dpr=2.5&pid=1.7'
+      item.dataValues.sessionName = '系统通知'
       return true
     }
   })

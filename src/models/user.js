@@ -38,6 +38,9 @@ const User = sequelize.define('users', {
   updatedAt: {
     type: DB.STRING,
   },
+  key: {
+    type: DB.STRING,
+  }
 }, {
   //使用自定义表名
   freezeTableName: true,

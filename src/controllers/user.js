@@ -1,7 +1,7 @@
 const dao_user = require('../dao/user')
 const dao_session = require('../dao/session')
 const md5 = require('md5');
-const utils = require('./utils')
+const utils = require('../utils/utils')
 
 // 注册用户
 const signin = async (req, res, next) => {
@@ -27,10 +27,13 @@ const signin = async (req, res, next) => {
     }))
     return
   }
-
+  //生成rsa密钥
+  let key = utils.publicKey
+  // 加密密码
+  let priKey = utils.privateKey
   let timestamps = new Date().getTime()
   // 写入数据库
-  let user = await dao_user.addUser({ userName, password: md5(password), email, avatar, createdAt: timestamps, updatedAt: timestamps });
+  let user = await dao_user.addUser({ userName, password: md5(password), email, avatar, createdAt: timestamps, updatedAt: timestamps, key: key });
   user = user.get({ plain: true })
   if (user.id) {
     // 自动创建系统通知会话
@@ -45,6 +48,7 @@ const signin = async (req, res, next) => {
         userName,
         email,
         avatar,
+        priKey,
       }
     }))
   }
@@ -52,7 +56,7 @@ const signin = async (req, res, next) => {
 
 
 
-// 用户登录 
+// 用户登录
 const login = async (req, res, next) => {
   res.set('content-type', 'application/json;charset=utf-8')
   const { userName, password } = req.body;
@@ -147,7 +151,7 @@ const getUserInfo = async (req, res, next) => {
   // const user = await utils.isLogin(req, res)
   // if (!user) return
 
-  // 
+  //
   const userInfo = await dao_user.getUserById(req.query.userId)
   // return userInfo
   let { id, userName, avatar, email } = userInfo

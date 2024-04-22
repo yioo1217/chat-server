@@ -1,7 +1,7 @@
 // sequelize连接数据库
 const DB = require('sequelize')
 
-const sequelize = new DB.Sequelize('socket_chat', 'root', 'root', {
+const sequelize = new DB.Sequelize('socket_chat', 'root', 'root1234', {
   host: 'localhost',
   dialect: 'mysql',
   define: {
