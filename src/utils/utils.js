@@ -52,10 +52,16 @@ const createRsaKey = function () {
   });
   return key;
 }
+
+
+const key = crypto.randomBytes(32);
+console.log('AES Key:', key.toString('hex'));
+
 module.exports = {
   guid,
   createSessionId,
   createRsaKey,
+  key
   // publicKey,
   // privateKey
 }

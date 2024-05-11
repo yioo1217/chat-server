@@ -15,8 +15,9 @@ const dao_friend = require('../dao/friend')
 
 const control_session = require('../controllers/session')
 const callback = require('./callback')
-
-function getSocket (server) {
+const crypto = require('crypto');
+const { key } = require('../utils/utils')
+function getSocket(server) {
   const io = socketio(server, {
     cors: true,
     maxHttpBufferSize: 3 * 1024 * 1024,
@@ -155,12 +156,23 @@ function getSocket (server) {
         userId: user.id
       })
 
+
+
+      // 加密函数
+      function aesEncrypt(text, key) {
+        const cipher = crypto.createCipheriv('aes-256-ecb', key, null); // 将IV设为null
+        let encrypted = cipher.update(text, 'utf8', 'hex');
+        encrypted += cipher.final('hex');
+        return encrypted;
+      }
+
       // 将聊天记录存入数据库
       let chat = {
         sessionId: sessionId,
         senderId: user.id,
         receiverId: data.receiverId,
-        content: content,
+        // content: content,
+        content: aesEncrypt(content, key),
         type: data.type,
         updatedAt: timestamps,
         others: data.type == 0 ? undefined : JSON.stringify(data.fileInfo)
